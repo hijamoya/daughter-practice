@@ -1,0 +1,192 @@
+:root {
+    --primary-color: #FF6B6B;
+    --secondary-color: #4ECDC4;
+    --bg-color: #F7FFF7;
+    --text-color: #2C3E50;
+    --grid-color: #ffcccc;
+    --grid-border: #ff9999;
+}
+
+* {
+    box-sizing: border-box;
+    touch-action: none;
+    /* Prevent default touch actions */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Noto Sans TC', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 20px;
+    align-items: center;
+}
+
+header h1 {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 700;
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin: 0 0 20px 0;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+}
+
+.practice-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+    width: 100%;
+    flex: 1;
+}
+
+/* Tian Zi Ge Styles */
+.tian-zi-ge {
+    width: 300px;
+    height: 300px;
+    border: 4px solid var(--grid-border);
+    position: relative;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    /* Center content (SVG and Canvas) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Hanzi Writer SVG will be appended here */
+}
+
+.tian-zi-ge::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    transform: translateY(-50%);
+    border-top: 2px dashed var(--grid-border);
+    background: transparent;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.tian-zi-ge::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    transform: translateX(-50%);
+    border-left: 2px dashed var(--grid-border);
+    background: transparent;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Ensure SVG is on top of grid lines but below touch interaction if needed */
+.tian-zi-ge svg {
+    z-index: 1;
+    position: relative;
+    display: block;
+    /* Remove inline spacing */
+}
+
+/* Overlay Canvas for User Ink */
+#ink-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    /* Above SVG */
+    pointer-events: none;
+    /* Let events pass through to Hanzi Writer (or container) */
+}
+
+.controls {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.btn {
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.3rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 700;
+    transition: transform 0.1s, box-shadow 0.1s;
+    box-shadow: 0 5px 0 rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+}
+
+.btn:active {
+    transform: translateY(4px);
+    box-shadow: none;
+}
+
+.primary {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.secondary {
+    background-color: #FFE66D;
+    color: #555;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .tian-zi-ge {
+        width: 280px;
+        height: 280px;
+    }
+
+    header h1 {
+        font-size: 2rem;
+    }
+
+    .btn {
+        padding: 12px 20px;
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-height: 600px) {
+    .tian-zi-ge {
+        width: 200px;
+        height: 200px;
+    }
+
+    header h1 {
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+    }
+}
