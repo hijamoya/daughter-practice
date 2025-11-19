@@ -125,6 +125,17 @@ main {
     /* Let events pass through to Hanzi Writer (or container) */
 }
 
+.score-display {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #FF6B6B;
+    margin-left: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: inline-block;
+    vertical-align: middle;
+}
+
 .controls {
     display: flex;
     gap: 15px;

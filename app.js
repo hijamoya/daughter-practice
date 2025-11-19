@@ -226,30 +226,41 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    const scoreDisplay = document.getElementById('score-display');
+    let mistakeCount = 0;
+
     // Override startQuiz to use the restore logic
-    const originalStartQuiz = startQuiz;
     startQuiz = function () {
         if (writer) {
             // Clear user ink before starting quiz
             inkCtx.clearRect(0, 0, inkCanvas.width, inkCanvas.height);
+            scoreDisplay.style.opacity = '0'; // Hide score
+            mistakeCount = 0; // Reset mistakes
 
             writer.updateColor('strokeColor', 'rgba(0,0,0,0)');
 
             writer.quiz({
                 onMistake: function (strokeData) {
                     console.log('Mistake!');
+                    mistakeCount++;
                     // It was a mistake, undo the ink
                     restoreCanvas();
-
-                    // Maybe show a hint?
-                    // writer.showOutline(); // It's already shown
                 },
                 onCorrectStroke: function (strokeData) {
-                    console.log('Correct!');
+                    console.log('Correct stroke data:', strokeData);
                     // Keep ink
                 },
                 onComplete: function (summaryData) {
-                    console.log('Complete!');
+                    console.log('Complete summary data:', summaryData);
+
+                    // Calculate score
+                    let score = 100 - (mistakeCount * 10);
+                    if (score < 0) score = 0;
+
+                    // Show score
+                    scoreDisplay.textContent = score + '分';
+                    scoreDisplay.style.opacity = '1';
+
                     // Wait a tiny bit then show standard
                     setTimeout(() => {
                         inkCtx.clearRect(0, 0, inkCanvas.width, inkCanvas.height);
@@ -258,8 +269,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         // Auto-advance after a short delay
                         setTimeout(() => {
+                            scoreDisplay.style.opacity = '0'; // Hide score before next
                             showNextWord();
-                        }, 1500);
+                        }, 2000); // Slightly longer delay to see score
                     }, 500);
                 }
             });
